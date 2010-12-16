@@ -1,4 +1,10 @@
 <?php
+/**
+ * Library class for migrations
+ *
+ * @package default
+ * @author Johnny Karhinen
+ */
 class Migrations {
 	protected $ci;
 	protected $meta_table;
@@ -101,6 +107,12 @@ class Migrations {
 	}
 }
 
+/**
+ * Base class for migrations
+ *
+ * @package default
+ * @author Johnny Karhinen
+ */
 abstract class Migration {
 	protected $db;
 	protected $dbforge;
@@ -110,6 +122,19 @@ abstract class Migration {
 		$this->dbforge = $ci->dbforge;
 	}
 	
+	/**
+	 * The method that is run when migrating from a schema version with a lower number
+	 *
+	 * @return void
+	 * @author Johnny Karhinen
+	 */
 	abstract public function up();
+	
+	/**
+	 * The method that is run when migrating from a schema version with a higher number
+	 *
+	 * @return void
+	 * @author Johnny Karhinen
+	 */
 	abstract public function down();
 }
