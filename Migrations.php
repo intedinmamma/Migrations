@@ -9,7 +9,7 @@ class Migrations {
 	public function __construct($config = array()) {
 		$this->ci = get_instance();
 		$this->meta_table = isset($config['migrations_meta_table']) ? $config['migrations_meta_table'] : 'migrations';
-		$this->migrations_path = isset($config['migrations_path']) ? $config['migrations_path'] : 'migrations';
+		$this->migrations_path = isset($config['migrations_path']) ? $config['migrations_path'] : APPPATH . "migrations/";
 		$this->ci->load->dbforge();
 		$this->setup_meta_table();
 	}
@@ -83,7 +83,10 @@ class Migrations {
 		$file_name = $this->versions[$version];
 		$class_name = preg_replace('/\d_|\.php/', '', basename($this->versions[$version])).'_migration';
 		require($file_name);
-		return new $class_name($this->ci);
+		if(is_a($class_name, 'Migration'))
+			return new $class_name($this->ci);
+		else
+			throw new Exception("The class {$class_name} is not a migration, sorry.");
 	}
 	
 	protected function get_migrations() {
