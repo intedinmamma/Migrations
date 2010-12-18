@@ -89,7 +89,7 @@ class Migrations {
 		$file_name = $this->versions[$version];
 		$class_name = preg_replace('/\d_|\.php/', '', basename($this->versions[$version])).'_migration';
 		require($file_name);
-		if(is_a($class_name, 'Migration'))
+		if(is_subclass_of($class_name, 'Migration'))
 			return new $class_name($this->ci);
 		else
 			throw new Exception("The class {$class_name} is not a migration, sorry.");
