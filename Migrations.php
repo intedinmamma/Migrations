@@ -87,7 +87,7 @@ class Migrations {
 	
 	protected function get_migration($version) {
 		$file_name = $this->versions[$version];
-		$class_name = preg_replace('/\d_|\.php/', '', basename($this->versions[$version])).'_migration';
+		$class_name = preg_replace('/\d+_|\.php/', '', basename($this->versions[$version])).'_migration';
 		require($file_name);
 		if(is_subclass_of($class_name, 'Migration'))
 			return new $class_name($this->ci);
@@ -100,7 +100,7 @@ class Migrations {
 			$this->versions = array();
 			$files = glob($this->migrations_path.'*.php');
 			foreach($files as $number => $file)
-				if($number = preg_replace('/\D/', '', basename($file)))
+				if($number = preg_replace('/\D*/', '', basename($file)))
 					$this->versions[$number] = $file;
 		}
 		return $this->versions;
